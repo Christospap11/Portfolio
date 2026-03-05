@@ -56,6 +56,118 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: none;
+    /* hide default cursor on desktop */
+}
+
+/* ==========================================================================
+   Custom Cursor
+   ========================================================================== */
+
+/* Small precise dot */
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, opacity 0.3s ease;
+    box-shadow: 0 0 8px var(--accent-primary), 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+/* Larger lagged ring */
+.cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid var(--accent-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition:
+        width 0.35s cubic-bezier(0.19, 1, 0.22, 1),
+        height 0.35s cubic-bezier(0.19, 1, 0.22, 1),
+        border-color 0.35s ease,
+        opacity 0.3s ease,
+        background 0.35s ease;
+    opacity: 0.7;
+}
+
+/* Hover state */
+.cursor-dot.hovering {
+    width: 12px;
+    height: 12px;
+    background: var(--accent-secondary);
+    box-shadow: 0 0 12px var(--accent-secondary), 0 0 30px rgba(179, 0, 255, 0.5);
+}
+
+.cursor-ring.hovering {
+    width: 56px;
+    height: 56px;
+    border-color: var(--accent-secondary);
+    background: rgba(179, 0, 255, 0.06);
+    opacity: 1;
+}
+
+/* Click state */
+.cursor-dot.clicking {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    box-shadow: 0 0 16px #fff;
+}
+
+.cursor-ring.clicking {
+    width: 26px;
+    height: 26px;
+    opacity: 1;
+}
+
+/* Particle sparkle */
+.cursor-particle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99997;
+    transform: translate(-50%, -50%);
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary);
+    animation: particle-fade 0.55s ease-out forwards;
+}
+
+@keyframes particle-fade {
+    0% {
+        opacity: 0.9;
+        transform: translate(calc(-50% + 0px), calc(-50% + 0px)) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.2);
+    }
+}
+
+/* Restore default cursor on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        cursor: auto;
+    }
+
+    .cursor-dot,
+    .cursor-ring,
+    .cursor-particle {
+        display: none;
+    }
 }
 
 /* Custom Scrollbar */
@@ -583,6 +695,14 @@ ul {
     max-width: 100%;
 }
 
+.skills .section-title {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 clamp(20px, 5vw, 100px);
+    box-sizing: border-box;
+}
+
 .marquee-container {
     display: flex;
     overflow: hidden;
@@ -744,10 +864,48 @@ footer {
 
     .hamburger::before {
         top: -8px;
+        transition: transform 0.3s ease, top 0.3s ease;
     }
 
     .hamburger::after {
         bottom: -8px;
+        transition: transform 0.3s ease, bottom 0.3s ease;
+    }
+
+    /* Open state: nav links drop down */
+    .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: rgba(5, 5, 5, 0.97);
+        padding: 20px 0 30px;
+        gap: 0;
+        text-align: center;
+        border-top: 1px solid var(--glass-border);
+    }
+
+    .nav-links.open li a {
+        display: block;
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+
+    /* Hamburger → X animation */
+    .nav-toggle.active .hamburger {
+        background: transparent;
+    }
+
+    .nav-toggle.active .hamburger::before {
+        top: 0;
+        transform: rotate(45deg);
+    }
+
+    .nav-toggle.active .hamburger::after {
+        bottom: 0;
+        transform: rotate(-45deg);
     }
 
     .about-content {

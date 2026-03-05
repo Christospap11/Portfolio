@@ -212,6 +212,25 @@ tiltCards.forEach(card => {
     });
 });
 
+// ==========================================================================
+// Mobile Burger Menu Toggle
+// ==========================================================================
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    navToggle.classList.toggle('active');
+});
+
+// Close mobile menu when a nav link is clicked
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+    });
+});
+
 // Smooth Scrolling for Nav Links (GSAP-powered)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
